@@ -1,0 +1,282 @@
+{
+  "info": {
+    "name": "Sum2025 Product Inventory Shop API",
+    "_postman_id": "b3f1a1a0-1111-4a2b-9a3d-000000000001",
+    "description": "Test suite for the Java Spring Boot e-commerce API (auth + product CRUD + search).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" },
+    { "key": "createdProductId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Login success (manager)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Response has token and role', () => {",
+              "  pm.expect(body.token).to.be.a('string');",
+              "  pm.expect(body.role).to.eql('manager');",
+              "});",
+              "pm.collectionVariables.set('token', body.token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"manager@system.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/auth", "host": ["{{baseUrl}}"], "path": ["api", "auth"] }
+      }
+    },
+    {
+      "name": "2. Login failure (wrong password)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 401', () => pm.response.to.have.status(401));",
+              "const body = pm.response.json();",
+              "pm.test('Error code is PR40101', () => pm.expect(body.errorCode).to.eql('PR40101'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"manager@system.com\",\n  \"password\": \"wrong-password\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/auth", "host": ["{{baseUrl}}"], "path": ["api", "auth"] }
+      }
+    },
+    {
+      "name": "3. Add product (manager)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 201', () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test('Product created with name', () => pm.expect(body.productName).to.eql('SmartWatch Z3'));",
+              "pm.collectionVariables.set('createdProductId', body.productId);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productName\": \"SmartWatch Z3\",\n  \"price\": 149.99,\n  \"quantity\": 30,\n  \"categoryId\": 2\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api", "products"] }
+      }
+    },
+    {
+      "name": "4. Update product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Price was updated', () => pm.expect(body.price).to.eql(179.99));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productName\": \"SmartWatch Z3\",\n  \"price\": 179.99,\n  \"quantity\": 25,\n  \"categoryId\": 2\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{createdProductId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{createdProductId}}"]
+        }
+      }
+    },
+    {
+      "name": "5. Get product by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Returned product has category info', () => pm.expect(body.category).to.have.property('categoryName'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{createdProductId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{createdProductId}}"]
+        }
+      }
+    },
+    {
+      "name": "6. Search products by name & category",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Response is grouped by category', () => pm.expect(body).to.be.an('array'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/search?name=Smart&category=2",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "search"],
+          "query": [
+            { "key": "name", "value": "Smart" },
+            { "key": "category", "value": "2" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Delete product (admin only) - expect 403 for manager",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 403 (manager cannot delete)', () => pm.response.to.have.status(403));",
+              "const body = pm.response.json();",
+              "pm.test('Error code is PR40301', () => pm.expect(body.errorCode).to.eql('PR40301'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{createdProductId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{createdProductId}}"]
+        }
+      }
+    },
+    {
+      "name": "8. Login success (admin) then delete product",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.collectionVariables.set('token', body.token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@system.com\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": { "raw": "{{baseUrl}}/api/auth", "host": ["{{baseUrl}}"], "path": ["api", "auth"] }
+      }
+    },
+    {
+      "name": "9. Delete product (admin) success",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{createdProductId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{createdProductId}}"]
+        }
+      }
+    },
+    {
+      "name": "10. Get deleted product -> 404",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status is 404', () => pm.response.to.have.status(404));",
+              "const body = pm.response.json();",
+              "pm.test('Error code is PR40401', () => pm.expect(body.errorCode).to.eql('PR40401'));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{createdProductId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{createdProductId}}"]
+        }
+      }
+    }
+  ]
+}
