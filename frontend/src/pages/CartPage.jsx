@@ -50,23 +50,23 @@ export default function CartPage() {
     return (
       <main className="page">
         <div className="container empty-state">
-          <p>Vui long dang nhap de xem gio hang.</p>
-          <Link to="/login" className="btn" style={{ marginTop: 12, display: 'inline-block' }}>Dang nhap</Link>
+          <p>Vui lòng đăng nhập để xem giỏ hàng.</p>
+          <Link to="/login" className="btn" style={{ marginTop: 12, display: 'inline-block' }}>Đăng nhập</Link>
         </div>
       </main>
     );
   }
 
   if (loading) {
-    return <main className="page"><div className="container">Dang tai gio hang...</div></main>;
+    return <main className="page"><div className="container">Đang tải giỏ hàng...</div></main>;
   }
 
   return (
     <main className="page">
       <div className="container">
-        <div className="section-title">Gio hang cua ban</div>
+        <div className="section-title">Giỏ hàng của bạn</div>
         {cart.items.length === 0 ? (
-          <div className="empty-state">Gio hang trong. <Link to="/" style={{ color: 'var(--shopee-orange)' }}>Tiep tuc mua sam</Link></div>
+          <div className="empty-state">Giỏ hàng trống. <Link to="/" style={{ color: 'var(--shopee-orange)' }}>Tiếp tục mua sắm</Link></div>
         ) : (
           <div className="card">
             {cart.items.map((item) => (
@@ -80,12 +80,12 @@ export default function CartPage() {
                   <button onClick={() => changeQty(item, item.quantity + 1)}>+</button>
                 </div>
                 <div style={{ width: 100, fontWeight: 600 }}>{formatPrice(item.lineTotal)}</div>
-                <button className="btn outline" onClick={() => removeItem(item)}>Xoa</button>
+                <button className="btn outline" onClick={() => removeItem(item)}>Xóa</button>
               </div>
             ))}
             <div className="cart-summary">
-              <div>Tong cong: <strong className="price" style={{ fontSize: 20 }}>{formatPrice(cart.totalAmount)}</strong></div>
-              <button className="btn" onClick={() => navigate('/checkout')}>Thanh toan</button>
+              <div>Tổng cộng: <strong className="price" style={{ fontSize: 20 }}>{formatPrice(cart.totalAmount)}</strong></div>
+              <button className="btn" onClick={() => navigate('/checkout')}>Thanh toán</button>
             </div>
           </div>
         )}

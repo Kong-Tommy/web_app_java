@@ -29,13 +29,13 @@ export default function ProductDetailPage() {
     }
     await addToCart(product.productId, quantity);
     await refreshCart();
-    setMessage('Da them vao gio hang!');
+    setMessage('Đã thêm vào giỏ hàng!');
   };
 
   if (!product) {
     return (
       <main className="page">
-        <div className="container">Dang tai...</div>
+        <div className="container">Đang tải...</div>
       </main>
     );
   }
@@ -52,13 +52,13 @@ export default function ProductDetailPage() {
           <div style={{ flex: 1 }}>
             <h2>{product.productName}</h2>
             <div style={{ color: 'var(--text-muted)', marginBottom: 8 }}>
-              Danh muc: {product.category?.categoryName || 'N/A'}
+              Danh mục: {product.category?.categoryName || 'N/A'}
             </div>
             <div className="price" style={{ fontSize: 28, margin: '12px 0' }}>
               {formatPrice(product.price)}
             </div>
-            <div style={{ marginBottom: 8 }}>Chat lieu: {product.material || 'N/A'}</div>
-            <div style={{ marginBottom: 16 }}>Con lai: {product.quantity} san pham</div>
+            <div style={{ marginBottom: 8 }}>Chất liệu: {product.material || 'N/A'}</div>
+            <div style={{ marginBottom: 16 }}>Còn lại: {product.quantity} sản phẩm</div>
 
             <div className="qty-control" style={{ marginBottom: 16 }}>
               <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>-</button>
@@ -67,7 +67,7 @@ export default function ProductDetailPage() {
             </div>
 
             <button className="btn" onClick={handleAddToCart} disabled={product.quantity === 0}>
-              {product.quantity === 0 ? 'Het hang' : 'Them vao gio hang'}
+              {product.quantity === 0 ? 'Hết hàng' : 'Thêm vào giỏ hàng'}
             </button>
             {message && <p className="success-text">{message}</p>}
           </div>

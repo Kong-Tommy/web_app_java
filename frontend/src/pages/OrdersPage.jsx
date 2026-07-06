@@ -6,6 +6,13 @@ function formatPrice(price) {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'USD' }).format(price);
 }
 
+function statusBadgeClass(status) {
+  if (status === 'COMPLETED') return 'badge success';
+  if (status === 'CANCELLED') return 'badge danger';
+  if (status === 'CONFIRMED' || status === 'SHIPPING') return 'badge warning';
+  return 'badge';
+}
+
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,24 +24,24 @@ export default function OrdersPage() {
   }, []);
 
   if (loading) {
-    return <main className="page"><div className="container">Dang tai don hang...</div></main>;
+    return <main className="page"><div className="container">Đang tải đơn hàng...</div></main>;
   }
 
   return (
     <main className="page">
       <div className="container">
-        <div className="section-title">Don hang cua toi</div>
+        <div className="section-title">Đơn hàng của tôi</div>
         {orders.length === 0 ? (
-          <div className="empty-state">Ban chua co don hang nao.</div>
+          <div className="empty-state">Bạn chưa có đơn hàng nào.</div>
         ) : (
           <div className="card">
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>Ma don</th>
-                  <th>Ngay dat</th>
-                  <th>Trang thai</th>
-                  <th>Tong tien</th>
+                  <th>Mã đơn</th>
+                  <th>Ngày đặt</th>
+                  <th>Trạng thái</th>
+                  <th>Tổng tiền</th>
                   <th></th>
                 </tr>
               </thead>
@@ -43,9 +50,9 @@ export default function OrdersPage() {
                   <tr key={o.orderId}>
                     <td>#{o.orderId}</td>
                     <td>{new Date(o.orderDate).toLocaleString('vi-VN')}</td>
-                    <td><span className="badge">{o.status}</span></td>
+                    <td><span className={statusBadgeClass(o.status)}>{o.status}</span></td>
                     <td>{formatPrice(o.totalAmount)}</td>
-                    <td><Link to={`/orders/${o.orderId}`}>Xem chi tiet</Link></td>
+                    <td><Link to={`/orders/${o.orderId}`}>Xem chi tiết</Link></td>
                   </tr>
                 ))}
               </tbody>

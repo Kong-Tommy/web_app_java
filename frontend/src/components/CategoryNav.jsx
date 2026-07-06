@@ -14,7 +14,7 @@ export default function CategoryNav() {
   return (
     <nav className="category-nav">
       <div className="container">
-        <Link to="/" className={!activeCategory ? 'active' : ''}>Tat ca</Link>
+        <Link to="/" className={!activeCategory ? 'active' : ''}>Tất cả</Link>
         {categories.map((c) => (
           <Link
             key={c.categoryId}

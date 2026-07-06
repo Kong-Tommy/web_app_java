@@ -35,23 +35,23 @@ export default function AdminLoginPage() {
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
             <Logo height={40} variant="onLight" />
           </div>
-          <h2>Kenh Nguoi Ban</h2>
+          <h2>Kênh Người Bán</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Email</label>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div className="form-group">
-              <label>Mat khau</label>
+              <label>Mật khẩu</label>
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
             {error && <p className="error-text">{error}</p>}
             <button className="btn block" type="submit" disabled={loading}>
-              {loading ? 'Dang xu ly...' : 'Dang nhap quan tri'}
+              {loading ? 'Đang xử lý...' : 'Đăng nhập quản trị'}
             </button>
           </form>
           <p style={{ marginTop: 16, fontSize: 12, color: 'var(--text-muted)' }}>
-            Demo: admin@system.com / manager@system.com / analyst@system.com - mat khau: 123456
+            Demo: admin@system.com / manager@system.com / analyst@system.com - mật khẩu: 123456
           </p>
         </div>
       </div>

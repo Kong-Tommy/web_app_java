@@ -82,8 +82,11 @@ CREATE TABLE Customer (
     Password VARCHAR(255) NOT NULL,
     Phone VARCHAR(20),
     Address VARCHAR(500),
+    AvatarUrl VARCHAR(1000),
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+-- Neu DB da ton tai truoc khi co cot nay (ddl-auto: none nen khong tu sinh), chay:
+-- ALTER TABLE Customer ADD COLUMN AvatarUrl VARCHAR(1000);
 
 -- ------------------------------------------------------------
 -- Gio hang

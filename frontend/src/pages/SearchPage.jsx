@@ -23,11 +23,11 @@ export default function SearchPage() {
     <main className="page">
       <div className="container">
         <div className="section-title">
-          Ket qua tim kiem {name && `cho "${name}"`} ({totalCount} san pham)
+          Kết quả tìm kiếm {name && `cho "${name}"`} ({totalCount} sản phẩm)
         </div>
-        {loading && <p>Dang tim kiem...</p>}
+        {loading && <p>Đang tìm kiếm...</p>}
         {!loading && totalCount === 0 && (
-          <div className="empty-state">Khong tim thay san pham phu hop.</div>
+          <div className="empty-state">Không tìm thấy sản phẩm phù hợp.</div>
         )}
         {groups.map((group) => (
           <div key={group.categoryId} style={{ marginBottom: 24 }}>

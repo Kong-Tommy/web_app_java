@@ -6,6 +6,13 @@ function formatPrice(price) {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'USD' }).format(price);
 }
 
+function statusBadgeClass(status) {
+  if (status === 'COMPLETED') return 'badge success';
+  if (status === 'CANCELLED') return 'badge danger';
+  if (status === 'CONFIRMED' || status === 'SHIPPING') return 'badge warning';
+  return 'badge';
+}
+
 export default function OrderDetailPage() {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
@@ -15,26 +22,26 @@ export default function OrderDetailPage() {
   }, [id]);
 
   if (!order) {
-    return <main className="page"><div className="container">Dang tai...</div></main>;
+    return <main className="page"><div className="container">Đang tải...</div></main>;
   }
 
   return (
     <main className="page">
       <div className="container" style={{ maxWidth: 700, margin: '0 auto' }}>
-        <div className="section-title">Don hang #{order.orderId}</div>
+        <div className="section-title">Đơn hàng #{order.orderId}</div>
         <div className="card">
-          <p>Trang thai: <span className="badge">{order.status}</span></p>
-          <p>Ngay dat: {new Date(order.orderDate).toLocaleString('vi-VN')}</p>
-          <p>Dia chi giao hang: {order.shippingAddress}</p>
-          <p>So dien thoai: {order.shippingPhone}</p>
+          <p>Trạng thái: <span className={statusBadgeClass(order.status)}>{order.status}</span></p>
+          <p>Ngày đặt: {new Date(order.orderDate).toLocaleString('vi-VN')}</p>
+          <p>Địa chỉ giao hàng: {order.shippingAddress}</p>
+          <p>Số điện thoại: {order.shippingPhone}</p>
 
           <table className="admin-table" style={{ marginTop: 16 }}>
             <thead>
               <tr>
-                <th>San pham</th>
-                <th>Gia</th>
+                <th>Sản phẩm</th>
+                <th>Giá</th>
                 <th>SL</th>
-                <th>Thanh tien</th>
+                <th>Thành tiền</th>
               </tr>
             </thead>
             <tbody>
@@ -50,7 +57,7 @@ export default function OrderDetailPage() {
           </table>
 
           <div className="cart-summary">
-            <div>Tong cong: <strong className="price" style={{ fontSize: 20 }}>{formatPrice(order.totalAmount)}</strong></div>
+            <div>Tổng cộng: <strong className="price" style={{ fontSize: 20 }}>{formatPrice(order.totalAmount)}</strong></div>
           </div>
         </div>
       </div>

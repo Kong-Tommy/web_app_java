@@ -36,10 +36,10 @@ export default function RegisterPage() {
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
             <Logo height={40} variant="onLight" />
           </div>
-          <h2>Tao tai khoan</h2>
+          <h2>Tạo tài khoản</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Ho ten</label>
+              <label>Họ tên</label>
               <input value={form.fullName} onChange={handleChange('fullName')} required />
             </div>
             <div className="form-group">
@@ -47,24 +47,24 @@ export default function RegisterPage() {
               <input type="email" value={form.email} onChange={handleChange('email')} required />
             </div>
             <div className="form-group">
-              <label>Mat khau</label>
+              <label>Mật khẩu</label>
               <input type="password" minLength={6} value={form.password} onChange={handleChange('password')} required />
             </div>
             <div className="form-group">
-              <label>So dien thoai</label>
+              <label>Số điện thoại</label>
               <input value={form.phone} onChange={handleChange('phone')} />
             </div>
             <div className="form-group">
-              <label>Dia chi</label>
+              <label>Địa chỉ</label>
               <input value={form.address} onChange={handleChange('address')} />
             </div>
             {error && <p className="error-text">{error}</p>}
             <button className="btn block" type="submit" disabled={loading}>
-              {loading ? 'Dang xu ly...' : 'Dang ky'}
+              {loading ? 'Đang xử lý...' : 'Đăng ký'}
             </button>
           </form>
           <p style={{ marginTop: 16, fontSize: 13 }}>
-            Da co tai khoan? <Link to="/login" style={{ color: 'var(--shopee-orange)' }}>Dang nhap</Link>
+            Đã có tài khoản? <Link to="/login" style={{ color: 'var(--shopee-orange)' }}>Đăng nhập</Link>
           </p>
         </div>
       </div>

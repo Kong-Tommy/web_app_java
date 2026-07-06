@@ -38,23 +38,23 @@ export default function LoginPage() {
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
             <Logo height={40} variant="onLight" />
           </div>
-          <h2>Dang nhap</h2>
+          <h2>Đăng nhập</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Email</label>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
             <div className="form-group">
-              <label>Mat khau</label>
+              <label>Mật khẩu</label>
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
             {error && <p className="error-text">{error}</p>}
             <button className="btn block" type="submit" disabled={loading}>
-              {loading ? 'Dang xu ly...' : 'Dang nhap'}
+              {loading ? 'Đang xử lý...' : 'Đăng nhập'}
             </button>
           </form>
           <p style={{ marginTop: 16, fontSize: 13 }}>
-            Chua co tai khoan? <Link to="/register" style={{ color: 'var(--shopee-orange)' }}>Dang ky ngay</Link>
+            Chưa có tài khoản? <Link to="/register" style={{ color: 'var(--shopee-orange)' }}>Đăng ký ngay</Link>
           </p>
         </div>
       </div>

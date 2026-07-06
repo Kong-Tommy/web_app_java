@@ -34,6 +34,9 @@ public class Customer {
     @Column(name = "Address")
     private String address;
 
+    @Column(name = "AvatarUrl")
+    private String avatarUrl;
+
     @Column(name = "CreatedAt")
     private LocalDateTime createdAt;
 
