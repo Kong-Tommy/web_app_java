@@ -1,45 +1,45 @@
-# shopVN - Webapp ban hang (Spring Boot + React)
+# shopVN - Webapp bán hàng (Spring Boot + React)
 
-Webapp thuong mai dien tu theo tong mau Shopee. Backend Java Spring Boot (JWT auth, REST API,
-Swagger), frontend React + Vite. Du lieu goc theo sum2025productinventorydb, mo rong them
-Customer / Cart / Orders de co trai nghiem mua hang day du.
+Webapp thương mại điện tử theo tông màu Shopee. Backend Java Spring Boot (JWT auth, REST API,
+Swagger), frontend React + Vite. Dữ liệu gốc theo sum2025productinventorydb, mở rộng thêm
+Customer / Cart / Orders để có trải nghiệm mua hàng đầy đủ.
 
-## Cau truc project
+## Cấu trúc project
 
 ```
 Project_java/
   backend/     Spring Boot API (Java 17, Maven)
-  frontend/    React + Vite storefront + trang quan tri
+  frontend/    React + Vite storefront + trang quản trị
   database/    schema.sql (MySQL)
   postman/     Postman collection (10 test case)
 ```
 
-## 1. Chuan bi Database (MySQL)
+## 1. Chuẩn bị Database (MySQL)
 
-Can co MySQL 8.x dang chay (vi du qua XAMPP/Docker/MySQL Installer).
+Cần có MySQL 8.x đang chạy (ví dụ qua XAMPP/Docker/MySQL Installer).
 
 ```bash
 mysql -u root -p < database/schema.sql
 ```
 
-Script se tao database `webappjava` voi cac bang: `SystemAccounts`, `Category`,
-`Product`, `Customer`, `CartItem`, `Orders`, `OrderItem`, kem du lieu mau.
+Script sẽ tạo database `webappjava` với các bảng: `SystemAccounts`, `Category`,
+`Product`, `Customer`, `CartItem`, `Orders`, `OrderItem`, kèm dữ liệu mẫu.
 
-Tai khoan nhan vien demo (mat khau chung: `123456`):
+Tài khoản nhân viên demo (mật khẩu chung: `123456`):
 
 | Email | Role |
 |---|---|
 | admin@system.com | admin (full CRUD) |
 | manager@system.com | manager (full CRUD) |
-| analyst1... -> analyst@system.com | analyst (chi doc) |
-| user1@system.com | role thuong - KHONG duoc cap token |
+| analyst1... -> analyst@system.com | analyst (chỉ đọc) |
+| user1@system.com | role thường - KHÔNG được cấp token |
 
-## 2. Chay Backend (Spring Boot)
+## 2. Chạy Backend (Spring Boot)
 
-Yeu cau: JDK 17+ va Maven (hoac dung IDE nhu IntelliJ/Eclipse da tich hop Maven).
+Yêu cầu: JDK 17+ và Maven (hoặc dùng IDE như IntelliJ/Eclipse đã tích hợp Maven).
 
-Sua thong tin ket noi DB tai `backend/src/main/resources/application.yml` neu can
-(user/password MySQL ):
+Sửa thông tin kết nối DB tại `backend/src/main/resources/application.yml` nếu cần
+(user/password MySQL):
 
 ```yaml
 spring:
@@ -49,24 +49,24 @@ spring:
     password: 123456
 ```
 
-Chay:
+Chạy:
 
 ```bash
 cd backend
 mvn spring-boot:run
 ```
 
-Backend chay tai `http://localhost:8080`.
+Backend chạy tại `http://localhost:8080`.
 
 - Swagger UI: http://localhost:8080/swagger-ui.html
-- Login nhan vien: `POST /api/auth`
-- Login/dang ky khach hang: `POST /api/customer/auth/login`, `POST /api/customer/auth/register`
+- Login nhân viên: `POST /api/auth`
+- Login/đăng ký khách hàng: `POST /api/customer/auth/login`, `POST /api/customer/auth/register`
 
-### Cac API chinh (theo dung de bai)
+### Các API chính (theo đúng đề bài)
 
-| Method | Endpoint | Quyen |
+| Method | Endpoint | Quyền |
 |---|---|---|
-| POST | /api/auth | Public - login nhan vien |
+| POST | /api/auth | Public - login nhân viên |
 | GET | /api/products | admin, manager, analyst, customer |
 | GET | /api/products/{id} | admin, manager, analyst, customer |
 | GET | /api/products/search?name=&category= | admin, manager, analyst, customer |
@@ -74,22 +74,23 @@ Backend chay tai `http://localhost:8080`.
 | PUT | /api/products/{id} | admin, manager |
 | DELETE | /api/products/{id} | admin only |
 
-Loi tra ve theo format:
+Lỗi trả về theo format:
 ```json
 { "errorCode": "PR40001", "message": "Product name is required" }
 ```
 
-### API mo rong cho webapp ban hang (ngoai de bai)
+### API mở rộng cho webapp bán hàng (ngoài đề bài)
 
 - `GET /api/shop/products`, `/api/shop/products/{id}`, `/api/shop/products/search`,
-  `/api/shop/categories` - xem san pham public, khong can dang nhap.
-- `POST/GET/PUT/DELETE /api/cart/**` - gio hang (can dang nhap khach hang).
-- `POST /api/orders`, `GET /api/orders`, `GET /api/orders/{id}` - dat hang / xem don hang.
-- `GET /api/admin/orders`, `PUT /api/admin/orders/{id}/status` - quan tri don hang (admin/manager).
+  `/api/shop/categories` - xem sản phẩm public, không cần đăng nhập.
+- `POST/GET/PUT/DELETE /api/cart/**` - giỏ hàng (cần đăng nhập khách hàng).
+- `POST /api/orders`, `GET /api/orders`, `GET /api/orders/{id}` - đặt hàng / xem đơn hàng.
+- `GET /api/customer/profile`, `PUT /api/customer/profile` - xem/sửa thông tin cá nhân khách hàng.
+- `GET /api/admin/orders`, `PUT /api/admin/orders/{id}/status` - quản trị đơn hàng (admin/manager).
 
-## 3. Chay Frontend (React + Vite)
+## 3. Chạy Frontend (React + Vite)
 
-Yeu cau: Node.js 18+.
+Yêu cầu: Node.js 18+.
 
 ```bash
 cd frontend
@@ -98,31 +99,36 @@ npm run dev
 ```
 
 Logo
-- Logo: `frontend/src/components/Logo.jsx` (component SVG, co bien the `onOrange`/`onLight`).
-- Anh san pham: `frontend/public/products/*.svg` (electronics, wearables, home-appliances, books, gaming).
+- Logo: `frontend/src/components/Logo.jsx` (component SVG, có biến thể `onOrange`/`onLight`).
+- Ảnh sản phẩm: `frontend/public/products/*.svg` (electronics, wearables, home-appliances, books, gaming).
 - Favicon: `frontend/public/favicon.svg`.
 
-Mo `http://localhost:5173`.
+Mở `http://localhost:5173`.
 
-- Trang khach hang: trang chu, tim kiem, chi tiet san pham, gio hang, thanh toan, don hang.
-- Trang quan tri (`/admin/login`): dang nhap bang tai khoan nhan vien (admin/manager/analyst),
-  quan ly san pham va don hang.
+- Trang khách hàng: trang chủ, tìm kiếm, chi tiết sản phẩm, giỏ hàng, thanh toán, đơn hàng,
+  thông tin tài khoản (`/profile`).
+- Trang quản trị (`/admin/login`): đăng nhập bằng tài khoản nhân viên (admin/manager/analyst),
+  quản lý sản phẩm và đơn hàng.
 
-Bien moi truong `frontend/.env`:
+Biến môi trường `frontend/.env`:
 ```
 VITE_API_BASE_URL=http://localhost:8080
 ```
 
 ## 4. Postman test suite
 
-Import `postman/Sum2025Shop_API.postman_collection.json` vao Postman. Collection gom 10 test case
+Import `postman/Sum2025Shop_API.postman_collection.json` vào Postman. Collection gồm 10 test case
 (login success/failure, add/update/delete product theo role, search, get by id, 401/403/404...).
-Chay theo thu tu (Run collection) de cac bien `token` / `createdProductId` duoc truyen tiep giua
-cac request.
+Chạy theo thứ tự (Run collection) để các biến `token` / `createdProductId` được truyền tiếp giữa
+các request.
 
-## Ghi chu
+## Ghi chú
 
-- Mat khau trong `database/schema.sql` da duoc hash bang BCrypt tuong ung voi `123456`.
-- Theo dung de bai: nhan vien co Role = 4 ("Others") se KHONG dang nhap duoc (khong cap token).
-- Khach hang (Customer) la mot he thong tai khoan rieng, dang ky qua `/api/customer/auth/register`
-  de mua hang tren storefront - khong lien quan den bang `SystemAccounts`.
+- Mật khẩu trong `database/schema.sql` đã được hash bằng BCrypt tương ứng với `123456`.
+- Theo đúng đề bài: nhân viên có Role = 4 ("Others") sẽ KHÔNG đăng nhập được (không cấp token).
+- Khách hàng (Customer) là một hệ thống tài khoản riêng, đăng ký qua `/api/customer/auth/register`
+  để mua hàng trên storefront - không liên quan đến bảng `SystemAccounts`.
+
+## Link Github để clone trong trường hợp lỗi khi cài file không thành công
+
+`https://github.com/Kong-Tommy/web_app_java`

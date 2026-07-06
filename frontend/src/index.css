@@ -102,10 +102,15 @@ button {
 }
 
 .search-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: var(--shopee-orange);
   border: none;
   color: #fff;
   padding: 0 20px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .header-actions {
@@ -114,6 +119,47 @@ button {
   gap: 20px;
   color: #fff;
   white-space: nowrap;
+}
+
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--shopee-orange-dark);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.avatar-circle.large {
+  width: 88px;
+  height: 88px;
+  font-size: 32px;
+}
+
+.header-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.header-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: #fff;
 }
 
 .cart-badge {
@@ -346,6 +392,21 @@ table.admin-table th {
   font-weight: 600;
   background: var(--shopee-orange-light);
   color: var(--shopee-orange);
+}
+
+.badge.success {
+  background: rgba(38, 170, 153, 0.12);
+  color: var(--success);
+}
+
+.badge.danger {
+  background: rgba(208, 1, 27, 0.1);
+  color: var(--danger);
+}
+
+.badge.warning {
+  background: rgba(255, 193, 7, 0.15);
+  color: #b8860b;
 }
 
 /* ---------- Admin layout ---------- */

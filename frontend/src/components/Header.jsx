@@ -6,7 +6,7 @@ import Logo from './Logo';
 
 export default function Header() {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useCustomerAuth();
+  const { isLoggedIn, logout, profile } = useCustomerAuth();
   const { itemCount } = useCart();
   const [keyword, setKeyword] = useState('');
 
@@ -17,16 +17,16 @@ export default function Header() {
 
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate('/login');
   };
 
   return (
     <>
       <div className="topbar">
         <div className="container">
-          <span>Ho tro</span>
+          <span>Hỗ trợ</span>
           <span>|</span>
-          <Link to="/admin/login">Kenh Nguoi Ban</Link>
+          <Link to="/admin/login">Kênh Người Bán</Link>
         </div>
       </div>
       <header className="header">
@@ -36,26 +36,35 @@ export default function Header() {
           </Link>
           <form className="search-bar" onSubmit={handleSearch}>
             <input
-              placeholder="Tim san pham, thuong hieu..."
+              placeholder="Tìm sản phẩm, thương hiệu..."
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
             />
-            <button type="submit">Tim kiem</button>
+            <button type="submit">🔍 Tìm kiếm</button>
           </form>
           <div className="header-actions">
-            <Link to="/cart" className="cart-badge">
-              🛒 Gio hang
+            <Link to="/cart" className="header-btn cart-badge">
+              🛒 Giỏ hàng
               {itemCount > 0 && <span className="count">{itemCount}</span>}
             </Link>
             {isLoggedIn ? (
               <>
-                <Link to="/orders">Don hang cua toi</Link>
-                <a onClick={handleLogout}>Dang xuat</a>
+                <Link to="/orders" className="header-btn">Đơn hàng của tôi</Link>
+                <a className="header-btn" onClick={handleLogout}>Đăng xuất</a>
+                <Link to="/profile" title="Thông tin tài khoản">
+                  {profile?.avatarUrl ? (
+                    <img className="avatar-circle" src={profile.avatarUrl} alt="Avatar" />
+                  ) : (
+                    <div className="avatar-circle">
+                      {(profile?.fullName || profile?.email || '?').charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </Link>
               </>
             ) : (
               <>
-                <Link to="/login">Dang nhap</Link>
-                <Link to="/register">Dang ky</Link>
+                <Link to="/login" className="header-btn">Đăng nhập</Link>
+                <Link to="/register" className="header-btn">Đăng ký</Link>
               </>
             )}
           </div>

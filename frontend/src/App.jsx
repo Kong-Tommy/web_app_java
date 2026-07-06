@@ -15,6 +15,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import OrdersPage from './pages/OrdersPage';
 import OrderDetailPage from './pages/OrderDetailPage';
+import ProfilePage from './pages/ProfilePage';
 
 import AdminLoginPage from './pages/admin/AdminLoginPage';
 import AdminProductsPage from './pages/admin/AdminProductsPage';
@@ -52,6 +53,7 @@ export default function App() {
               <Route path="/register" element={<StorefrontLayout><RegisterPage /></StorefrontLayout>} />
               <Route path="/orders" element={<StorefrontLayout><OrdersPage /></StorefrontLayout>} />
               <Route path="/orders/:id" element={<StorefrontLayout><OrderDetailPage /></StorefrontLayout>} />
+              <Route path="/profile" element={<StorefrontLayout><ProfilePage /></StorefrontLayout>} />
             </Routes>
           </BrowserRouter>
         </CartProvider>

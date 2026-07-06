@@ -85,7 +85,7 @@ export default function AdminProductsPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Xoa san pham nay?')) return;
+    if (!window.confirm('Xóa sản phẩm này?')) return;
     try {
       await adminDeleteProduct(id);
       await load();
@@ -96,64 +96,64 @@ export default function AdminProductsPage() {
 
   return (
     <div>
-      <div className="section-title">Quan ly san pham</div>
+      <div className="section-title">Quản lý sản phẩm</div>
 
       {canWrite && (
         <div className="card" style={{ marginBottom: 20 }}>
-          <h3 style={{ textAlign: 'left', marginTop: 0 }}>{editingId ? 'Sua san pham' : 'Them san pham moi'}</h3>
+          <h3 style={{ textAlign: 'left', marginTop: 0 }}>{editingId ? 'Sửa sản phẩm' : 'Thêm sản phẩm mới'}</h3>
           <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div className="form-group">
-              <label>Ten san pham (viet hoa chu dau)</label>
+              <label>Tên sản phẩm (viết hoa chữ đầu)</label>
               <input value={form.productName} onChange={handleChange('productName')} required />
             </div>
             <div className="form-group">
-              <label>Chat lieu</label>
+              <label>Chất liệu</label>
               <input value={form.material} onChange={handleChange('material')} />
             </div>
             <div className="form-group">
-              <label>Gia</label>
+              <label>Giá</label>
               <input type="number" step="0.01" min="0.01" value={form.price} onChange={handleChange('price')} required />
             </div>
             <div className="form-group">
-              <label>So luong</label>
+              <label>Số lượng</label>
               <input type="number" min="0" value={form.quantity} onChange={handleChange('quantity')} required />
             </div>
             <div className="form-group">
-              <label>Danh muc</label>
+              <label>Danh mục</label>
               <select value={form.categoryId} onChange={handleChange('categoryId')} required>
-                <option value="">-- Chon danh muc --</option>
+                <option value="">-- Chọn danh mục --</option>
                 {categories.map((c) => (
                   <option key={c.categoryId} value={c.categoryId}>{c.categoryName}</option>
                 ))}
               </select>
             </div>
             <div className="form-group">
-              <label>Ngay ra mat</label>
+              <label>Ngày ra mắt</label>
               <input type="date" value={form.releaseDate || ''} onChange={handleChange('releaseDate')} />
             </div>
             <div className="form-group" style={{ gridColumn: '1 / -1' }}>
-              <label>Anh (URL)</label>
+              <label>Ảnh (URL)</label>
               <input value={form.imageUrl} onChange={handleChange('imageUrl')} />
             </div>
             {error && <p className="error-text" style={{ gridColumn: '1 / -1' }}>{error}</p>}
             <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 8 }}>
-              <button className="btn" type="submit">{editingId ? 'Luu thay doi' : 'Them san pham'}</button>
-              {editingId && <button className="btn outline" type="button" onClick={resetForm}>Huy</button>}
+              <button className="btn" type="submit">{editingId ? 'Lưu thay đổi' : 'Thêm sản phẩm'}</button>
+              {editingId && <button className="btn outline" type="button" onClick={resetForm}>Hủy</button>}
             </div>
           </form>
         </div>
       )}
 
       {loading ? (
-        <p>Dang tai...</p>
+        <p>Đang tải...</p>
       ) : (
         <table className="admin-table">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Ten san pham</th>
-              <th>Danh muc</th>
-              <th>Gia</th>
+              <th>Tên sản phẩm</th>
+              <th>Danh mục</th>
+              <th>Giá</th>
               <th>SL</th>
               <th></th>
             </tr>
@@ -167,8 +167,8 @@ export default function AdminProductsPage() {
                 <td>{formatPrice(p.price)}</td>
                 <td>{p.quantity}</td>
                 <td style={{ display: 'flex', gap: 8 }}>
-                  {canWrite && <a onClick={() => startEdit(p)}>Sua</a>}
-                  {canDelete && <a onClick={() => handleDelete(p.productId)} style={{ color: 'var(--danger)' }}>Xoa</a>}
+                  {canWrite && <a onClick={() => startEdit(p)}>Sửa</a>}
+                  {canDelete && <a onClick={() => handleDelete(p.productId)} style={{ color: 'var(--danger)' }}>Xóa</a>}
                 </td>
               </tr>
             ))}

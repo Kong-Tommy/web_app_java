@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { adminGetOrders, adminUpdateOrderStatus } from '../../api/adminProducts';
 
 const STATUSES = ['PENDING', 'CONFIRMED', 'SHIPPING', 'COMPLETED', 'CANCELLED'];
@@ -10,6 +10,7 @@ function formatPrice(price) {
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedId, setExpandedId] = useState(null);
 
   const load = async () => {
     setLoading(true);
@@ -27,40 +28,83 @@ export default function AdminOrdersPage() {
     await load();
   };
 
+  const toggleExpand = (orderId) => {
+    setExpandedId((current) => (current === orderId ? null : orderId));
+  };
+
   return (
     <div>
-      <div className="section-title">Quan ly don hang</div>
+      <div className="section-title">Quản lý đơn hàng</div>
       {loading ? (
-        <p>Dang tai...</p>
+        <p>Đang tải...</p>
       ) : (
         <table className="admin-table">
           <thead>
             <tr>
-              <th>Ma don</th>
-              <th>Khach hang</th>
-              <th>Ngay dat</th>
-              <th>Tong tien</th>
-              <th>Trang thai</th>
+              <th>Mã đơn</th>
+              <th>Khách hàng</th>
+              <th>Ngày đặt</th>
+              <th>Tổng tiền</th>
+              <th>Trạng thái</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((o) => (
-              <tr key={o.orderId}>
-                <td>#{o.orderId}</td>
-                <td>
-                  <div>{o.customerName}</div>
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{o.customerEmail}</div>
-                </td>
-                <td>{new Date(o.orderDate).toLocaleString('vi-VN')}</td>
-                <td>{formatPrice(o.totalAmount)}</td>
-                <td>
-                  <select value={o.status} onChange={(e) => handleStatusChange(o.orderId, e.target.value)}>
-                    {STATUSES.map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                </td>
-              </tr>
+              <Fragment key={o.orderId}>
+                <tr>
+                  <td>#{o.orderId}</td>
+                  <td>
+                    <div>{o.customerName}</div>
+                    <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{o.customerEmail}</div>
+                  </td>
+                  <td>{new Date(o.orderDate).toLocaleString('vi-VN')}</td>
+                  <td>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                      <span>{formatPrice(o.totalAmount)}</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleExpand(o.orderId)}
+                        title="Xem sản phẩm đã mua"
+                        style={{
+                          border: 'none',
+                          background: 'transparent',
+                          cursor: 'pointer',
+                          fontSize: 12,
+                          color: 'var(--text-muted)',
+                          transform: expandedId === o.orderId ? 'rotate(180deg)' : 'none',
+                          transition: 'transform 0.15s',
+                        }}
+                      >
+                        ▼
+                      </button>
+                    </div>
+                  </td>
+                  <td>
+                    <select value={o.status} onChange={(e) => handleStatusChange(o.orderId, e.target.value)}>
+                      {STATUSES.map((s) => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                  </td>
+                </tr>
+                {expandedId === o.orderId && (
+                  <tr>
+                    <td colSpan={5} style={{ background: '#fafafa' }}>
+                      <div style={{ padding: '8px 12px', textAlign: 'left' }}>
+                        {o.items.map((item) => (
+                          <div
+                            key={item.productId}
+                            style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: 13 }}
+                          >
+                            <span>{item.productName} x{item.quantity}</span>
+                            <span>{formatPrice(item.lineTotal)}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             ))}
           </tbody>
         </table>

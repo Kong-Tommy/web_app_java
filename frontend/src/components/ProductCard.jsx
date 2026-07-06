@@ -11,7 +11,7 @@ export default function ProductCard({ product }) {
       <div className="info">
         <div className="name">{product.productName}</div>
         <div className="price">{formatPrice(product.price)}</div>
-        <div className="sold">Con lai: {product.quantity}</div>
+        <div className="sold">Còn lại: {product.quantity}</div>
       </div>
     </Link>
   );

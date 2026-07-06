@@ -21,20 +21,20 @@ export default function AdminLayout() {
       <div className="admin-topbar">
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <Logo height={28} />
-          <strong>Kenh Nguoi Ban</strong>
+          <strong>Kênh Người Bán</strong>
         </div>
         <div>
-          <span style={{ marginRight: 16 }}>Vai tro: {role}</span>
-          <a onClick={handleLogout}>Dang xuat</a>
+          <span style={{ marginRight: 16 }}>Vai trò: {role}</span>
+          <a onClick={handleLogout}>Đăng xuất</a>
         </div>
       </div>
       <div style={{ display: 'flex', flex: 1 }}>
         <aside className="admin-sidebar">
           <Link to="/admin/products" className={location.pathname.includes('/admin/products') ? 'active' : ''}>
-            San pham
+            Sản phẩm
           </Link>
           <Link to="/admin/orders" className={location.pathname.includes('/admin/orders') ? 'active' : ''}>
-            Don hang
+            Đơn hàng
           </Link>
         </aside>
         <div className="admin-content">
