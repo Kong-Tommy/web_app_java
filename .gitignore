@@ -1,5 +1,4 @@
-# Editor / AI tool local metadata (not part of the project)
-.claude/
+# Editor
 .vscode/
 .github/modernize/
 
