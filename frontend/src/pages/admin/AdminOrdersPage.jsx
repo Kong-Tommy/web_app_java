@@ -47,7 +47,10 @@ export default function AdminOrdersPage() {
             {orders.map((o) => (
               <tr key={o.orderId}>
                 <td>#{o.orderId}</td>
-                <td>{o.customerId}</td>
+                <td>
+                  <div>{o.customerName}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{o.customerEmail}</div>
+                </td>
                 <td>{new Date(o.orderDate).toLocaleString('vi-VN')}</td>
                 <td>{formatPrice(o.totalAmount)}</td>
                 <td>

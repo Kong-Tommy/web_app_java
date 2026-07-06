@@ -7,6 +7,8 @@ import java.util.List;
 public record OrderResponse(
         Integer orderId,
         Integer customerId,
+        String customerName,
+        String customerEmail,
         LocalDateTime orderDate,
         String status,
         String shippingAddress,

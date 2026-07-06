@@ -118,6 +118,8 @@ public class OrderService {
         return new OrderResponse(
                 order.getOrderId(),
                 order.getCustomer().getCustomerId(),
+                order.getCustomer().getFullName(),
+                order.getCustomer().getEmail(),
                 order.getOrderDate(),
                 order.getStatus().name(),
                 order.getShippingAddress(),
